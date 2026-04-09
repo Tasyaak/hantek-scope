@@ -1,16 +1,27 @@
 [build-system]
-requires = ["setuptools>=68", "wheel"]
+requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "hantek-scope"
 version = "0.1.0"
-description = "Python wrapper and acquisition helpers for oscilloscope Hantek 6074DB"
+description = "Python API and acquisition helpers for Hantek 6000BD-series USB oscilloscopes"
 readme = "README.md"
 requires-python = ">=3.10"
+keywords = [
+    "hantek",
+    "oscilloscope",
+    "usb",
+    "data-acquisition",
+    "dds",
+]
 dependencies = [
     "numpy>=1.24",
 ]
+
+[project.urls]
+Repository = "https://github.com/Tasyaak/hantek-scope"
+Issues = "https://github.com/Tasyaak/hantek-scope/issues"
 
 [tool.setuptools]
 package-dir = {"" = "src"}

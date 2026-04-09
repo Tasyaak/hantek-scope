@@ -6,7 +6,8 @@ Python API for Hantek 6000BD-series USB oscilloscopes and built-in DDS generator
 > Tested workflow: Hantek 6074BD on Windows with the vendor 6000BD SDK
 > Intended family: Hantek 6074BD / 6104BD / 6204BD / 6254BD, provided that the vendor SDK and DLL interface are compatible
 
-`hantek_scope` is a thin but practical Python wrapper around the vendor `Hantek 6000BD SDK` for Windows
+`hantek_scope` is a thin but practical Python API around the vendor `Hantek 6000BD SDK` for Windows
+
 It is designed for scripted acquisition, burst-driven measurements, synchronized averaging, and experimental automation workflows where the oscilloscope is controlled from Python instead of the vendor GUI
 
 The package focuses on:
@@ -59,28 +60,25 @@ If you use a different device from the same family, treat it as **supported by d
 
 ## Vendor SDK installation
 
-1. Open the official Hantek page for the 6000BD family:
+The vendor SDK is **not** bundled with this repository
+You must download it separately from the official Hantek page for the 6000BD family, open the **Download** section, and download **Hantek6000BD SDK**
 
-   `https://www.hantek.com/products/detail/10164?`
+Official page:
 
-2. Open the **Download** section
+`https://www.hantek.com/products/detail/10164`
 
-3. Download **Hantek6000BD SDK**
+After extracting the SDK, this project expects the DLL directory to be resolved **via `get_default_dll_dir()`** from `hantek_scope.paths`
 
-4. Extract the SDK locally
-
-5. Provide the DLL directory to the package in one of the following ways:
+`get_default_dll_dir()` supports exactly two lookup modes:
 
 ### Option A — via environment variable
 
 Set:
-
 ```powershell
 $env:HANTEK_DLL_DIR="C:\path\to\Hantek_SDK\Dll\x64"
 ```
 
 The directory must contain:
-
 ```text
 HTHardDll.dll
 ```
@@ -96,7 +94,13 @@ Hantek_SDK/
         └── HTHardDll.dll
 ```
 
-In that case the package can resolve the DLL automatically
+If `HANTEK_DLL_DIR` is not set, `get_default_dll_dir()` will look for the SDK in this default location
+
+All documented examples in this repository assume that the DLL path is obtained through:
+
+```python
+from hantek_scope import get_default_dll_dir
+```
 
 ## Installation
 
@@ -114,11 +118,16 @@ py -m pip install --upgrade pip
 py -m pip install -e .
 ```
 
-If the repository has optional development tools, install them separately, for example:
+### Install development and test dependencies
+
+For package development, verification, and testing, install the additional dependencies listed in `requirements-dev.txt`:
 
 ```powershell
 py -m pip install -r requirements-dev.txt
 ```
+
+This file is intended for contributors and maintainers of `hantek_scope`
+It is not required for basic runtime use of the package
 
 ## Quick start
 
@@ -308,10 +317,18 @@ The package supports two signal representations:
 
 For voltage conversion, the package can use either:
 
-* nominal conversion derived from the current vertical scale
-* explicit calibration coefficients from `VERT_CAL_DB`
+- nominal conversion derived from the current vertical scale
+- explicit calibration coefficients from `VERT_CAL_DB` in `hantek_scope.calibration`
 
 If you do not yet have a validated calibration profile for your probe or acquisition path, start with nominal settings and describe that choice explicitly in your experiment documentation
+
+The scripts in `scripts/calibration` are intended for **manual calibration workflow**:
+- estimating vertical calibration coefficients for a specific acquisition path
+- validating those coefficients
+- updating the values stored in `VERT_CAL_DB`
+
+These scripts are not required for basic acquisition
+They are maintenance utilities for building and checking the calibration table used by `make_scan_params_from_db(...)`
 
 ## Error handling and operational notes
 
@@ -332,7 +349,7 @@ This behavior is intentional and is designed to make burst-averaged acquisitions
 .
 ├── README.md
 ├── pyproject.toml
-├── requirements-dev.txt          # optional
+├── requirements-dev.txt
 ├── .gitignore
 ├── src/
 │   └── hantek_scope/
@@ -350,7 +367,7 @@ This behavior is intentional and is designed to make burst-averaged acquisitions
 │       ├── sdk_bindings.py
 │       └── sdk_structs.py
 └── scripts/
-    ├── calibration/
+    ├── calibration/        # manual tools for filling and checking VERT_CAL_DB
     └── verification/
 ```
 
@@ -364,7 +381,11 @@ Recommended development workflow:
 py -m venv .venv
 .venv\Scripts\Activate.ps1
 py -m pip install -e .
+py -m pip install -r requirements-dev.txt
 ```
+
+`requirements-dev.txt` contains dependencies used for development, verification, and testing of hantek_scope
+It should be kept under version control as part of the repository setup for contributors
 
 ## What this repository intentionally does not promise
 
@@ -376,6 +397,7 @@ The project does not currently promise:
 * cross-platform support outside Windows
 * support for arbitrary Hantek product families outside the 6000BD DLL interface
 * stable compatibility with every future vendor SDK revision
+* universally valid calibration profiles for every probe and acquisition setup
 
 ## Acknowledgements
 
