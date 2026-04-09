@@ -65,7 +65,7 @@ You must download it separately from the official Hantek page for the 6000BD fam
 
 Official page:
 
-`https://www.hantek.com/products/detail/10164`
+https://www.hantek.com/products/detail/10164
 
 After extracting the SDK, this project expects the DLL directory to be resolved **via `get_default_dll_dir()`** from `hantek_scope.paths`
 
