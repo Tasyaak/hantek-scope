@@ -1,0 +1,96 @@
+# =========================================================
+# Python: bytecode, caches, tooling
+# =========================================================
+__pycache__/
+*.py[cod]
+*$py.class
+
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.pyre/
+.pytype/
+.hypothesis/
+.tox/
+.nox/
+.dmypy.json
+dmypy.json
+
+# =========================================================
+# Virtual environments
+# =========================================================
+.venv/
+venv/
+env/
+ENV/
+
+# =========================================================
+# Packaging / build artifacts
+# =========================================================
+build/
+dist/
+site/
+scripts/manual_tests
+.eggs/
+*.egg
+*.egg-info/
+pip-wheel-metadata/
+
+# =========================================================
+# Coverage / reports
+# =========================================================
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+
+# =========================================================
+# Logs and local runtime artifacts
+# =========================================================
+*.log
+logs/
+
+# =========================================================
+# IDE / editor files
+# =========================================================
+.idea/
+.vscode/
+*.code-workspace
+
+# =========================================================
+# OS-specific junk files
+# =========================================================
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# =========================================================
+# Vendor SDK and vendor binaries
+# Keep third-party SDK out of git history.
+# The package can resolve it locally via HANTEK_DLL_DIR
+# or via ./Hantek_SDK/Dll/x64
+# =========================================================
+Hantek_SDK/
+*Hantek*SDK*.zip
+*Hantek*SDK*.rar
+*Hantek*SDK*.7z
+HT600*SDK*.zip
+HT600*SDK*.rar
+HT600*SDK*.7z
+
+# =========================================================
+# Temporary local test outputs
+# Uncomment or extend if your manual test scripts
+# generate acquisition dumps or plots inside the repo.
+# =========================================================
+*.jpg
+*.jpeg
+*.svg
+*.mp4
+
+# =========================================================
+# Optional local environment files
+# =========================================================
+.env
+.env.*
+.python-version
