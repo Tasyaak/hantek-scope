@@ -54,7 +54,7 @@ class HantekHardDll:
         self._relay = RELAYCONTROL()
         self._ctrl = CONTROLDATA()
 
-        # Буферы данных (4 канала) — выделим при configure()
+        # Буферы данных (4 канала) — выделяются при configure()
         self._buf_len : int = 0
         self._ch1_buf : Optional[ct.Array[WORD]] = None
         self._ch2_buf : Optional[ct.Array[WORD]] = None
@@ -212,7 +212,7 @@ class HantekHardDll:
         )
 
         if self._ampcal_key != ampcal_key:
-            # массив volt-div на 4 канала (у вас он одинаковый для всех, но SDK ждёт массив)
+            # массив volt-div на 4 канала
             volt_arr = (WORD * MAX_CH_NUM)(
                 WORD(rx_volt_div_idx), WORD(rx_volt_div_idx), WORD(rx_volt_div_idx), WORD(rx_volt_div_idx)
             )
@@ -290,7 +290,6 @@ class HantekHardDll:
     def capture(
         self,
         *,
-        point : Optional[Tuple[float, float]] = None,
         return_mode : Literal["raw", "volts", "both"] = "volts",
         copy : bool = False,
         apply_vert_cal : bool = True,
@@ -307,7 +306,6 @@ class HantekHardDll:
         triggered = self._wait_capture_done(timeout_s=p.timeout_s, poll_s=p.poll_s)
 
         return self._read_frame_from_buffers(
-            point=point,
             triggered=triggered,
             return_mode=return_mode,
             copy=copy,
@@ -317,7 +315,6 @@ class HantekHardDll:
     def capture_burst(
         self,
         *,
-        point : Optional[Tuple[float, float]] = None,
         return_mode : Literal["raw", "volts", "both"] = "volts",
         copy : bool = False,
         auto_enable_dds : bool = True,
@@ -360,7 +357,6 @@ class HantekHardDll:
                 triggered = self._wait_capture_done(timeout_s=p.timeout_s, poll_s=p.poll_s)
 
                 return self._read_frame_from_buffers(
-                    point=point,
                     triggered=triggered,
                     return_mode=return_mode,
                     copy=copy,
@@ -402,7 +398,6 @@ class HantekHardDll:
     def _read_frame_from_buffers(
         self,
         *,
-        point : Optional[Tuple[float, float]],
         triggered : bool,
         return_mode : Literal["raw", "volts", "both"],
         copy : bool,
@@ -489,7 +484,6 @@ class HantekHardDll:
         ref_overflow = is_overflow(ref_raw_view) if ref_raw_view is not None else False
 
         return AScanFrame(
-            point=point,
             fs_hz=self.fs_hz,
             dt_s=self.dt_s,
             t_s=t_out,

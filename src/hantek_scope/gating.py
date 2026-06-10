@@ -19,6 +19,10 @@ class TimeGate:
     def width_s(self) -> float:
         return float(self.t2_s - self.t1_s)
 
+    @property
+    def label_us(self) -> str:
+        return f"{self.t1_s * 1e6:.1f}–{self.t2_s * 1e6:.1f} мкс"
+
 
 def gate_mask(t_s : np.ndarray, gate : TimeGate) -> np.ndarray:
     t_s = np.asarray(t_s, dtype=np.float64)

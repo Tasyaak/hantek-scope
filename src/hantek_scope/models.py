@@ -1,6 +1,6 @@
 import numpy as np
 from dataclasses import dataclass
-from typing import Optional, Tuple
+from typing import Optional
 from .enums import (
     Channel, Coupling, TriggerMode, TriggerSlope,
     TriggerCoupling, YTFormat, StartControl, DDSWaveType, DDSMode
@@ -130,7 +130,6 @@ class AScanFrame:
     t и raw могут быть view на внутренний буфер (если copy=False), при следующем capture() данные будут перезаписаны
     t — кэшируемый массив времени (не меняется при фиксированных параметрах)
     """
-    point : Optional[Tuple[float, float]]
     fs_hz : float
     dt_s : float
     t_s : np.ndarray

@@ -1,4 +1,3 @@
-from __future__ import annotations
 import os, ctypes as ct
 from pathlib import Path
 from .sdk_structs import WORD, RELAYCONTROL, CONTROLDATA

@@ -17,7 +17,7 @@ def _dec(x : str) -> Decimal:
 def parse_time_div_idx(value : int | str) -> int:
     """
     value: int (готовый индекс) или строка вроде '10ms', '2ns', '0.5s'
-    Возвращает точный idx. Если значения нет в таблице — ValueError
+    Возвращает точный idx, если значения нету в таблице — ValueError
     """
     if isinstance(value, bool):
         raise TypeError(f"time_div_idx must be int or str, got: bool")
